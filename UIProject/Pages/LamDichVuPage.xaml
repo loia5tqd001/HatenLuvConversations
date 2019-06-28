@@ -1,0 +1,448 @@
+﻿<Page x:Class="UIProject.Pages.LamDichVuPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:UIProject.Pages"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:customControls="clr-namespace:UIProject.CustomControls"
+      xmlns:dataValidation="clr-namespace:UIProject.DataValidation"
+      xmlns:services="clr-namespace:UIProject.ServiceProviders"
+      xmlns:converters="clr-namespace:UIProject.Converters"
+      xmlns:dataGridAttach="clr-namespace:UIProject.Behaviors"
+      mc:Ignorable="d" 
+      Title="LamDichVuPage">
+    <Page.Resources>
+        <converters:NumberValidateConverter x:Key="numberValidateConverter"/>
+        <Style TargetType="{x:Type Label}" BasedOn="{StaticResource BelowMediumLabelStyle}" x:Key="ValueLabelStyle">
+            <Setter Property="Margin" Value="0 7 7 7"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="Foreground" Value="Gray"/>
+        </Style>
+        <Style TargetType="{x:Type Label}" BasedOn="{StaticResource BelowMediumLabelStyle}">
+            <Setter Property="Margin" Value="0 7 7 7"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+        <Style TargetType="{x:Type Label}" BasedOn="{StaticResource MediumLabelStyle}" x:Key="TitleLabelStyle">
+            <Setter Property="Margin" Value="0 0 0 10"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+        <Style TargetType="{x:Type Border}">
+            <Setter Property="Background" Value="{StaticResource MaterialDesignPaper}"/>
+        </Style>
+    </Page.Resources>
+    <Border Margin="15 10 10 10"
+            Background="WhiteSmoke">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0"
+                       Margin="5 10 10 10"
+                       Style="{StaticResource HeaderLabelStyle}"
+                       HorizontalAlignment="Left"
+                       Content="Tạo phiếu dịch vụ"/>
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Right">
+                    <Button x:Name="btnXemDanhSachDV"
+                            Grid.Column="1"
+                            Margin="10"
+                            Style="{StaticResource UIProjectLightButtonStyle}"
+                            Content="Danh sách dịch vụ"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Command="{Binding XemDanhSachDichVuCommand}"
+                            Click="BtnXemDanhSachDV_Click"/>
+                    <Button x:Name="btnThemDichVu"
+                            Margin="10"
+                            Style="{StaticResource UIProjectLightIconButtonStyle}"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            ToolTip="Thêm dịch vụ mới"
+                            Command="{Binding ThemDichVuCommand}"
+                            Click="BtnThemDichVu_Click">
+                        <materialDesign:PackIcon Kind="Add"
+                                                 Width="auto"
+                                                 Height="auto"/>
+                    </Button>
+                    <Button 
+                            Grid.Column="1"
+                            Margin="10"
+                            Style="{StaticResource UIProjectShadowIconButtonStyle}"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            ToolTip="Quay lại trang tổng quan"
+                            Command="{Binding QuayLaiTrangTongQuanCommand}">
+                        <materialDesign:PackIcon Kind="ArrowBack"
+                                                 Width="auto"
+                                                 Height="auto"/>
+                    </Button>
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Row="1"
+                  Panel.ZIndex="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0"
+                      Panel.ZIndex="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0" Grid.Column="0"
+                          Panel.ZIndex="99">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <materialDesign:Card Grid.Column="0"
+                                             Margin="0 10 5 10"
+                                             Padding="5 5 5 0"
+                                             Panel.ZIndex="99"
+                                             Style="{StaticResource UIProjectMaterialDesignCardStyle}">
+                            <DockPanel Grid.Column="0">
+                                <Label Style="{StaticResource TitleLabelStyle}"
+                                       Content="Thông tin khách hàng"
+                                       DockPanel.Dock="Top"/>
+                                <customControls:SearchTextBox x:Name="timKiemKhachHang"
+                                                              DockPanel.Dock="Top"
+                                                              VerticalAlignment="Top"                                                              
+                                                              BorderBrush="{StaticResource AirForceBlue}"
+                                                              Style="{StaticResource FieldSearchTextBoxStyle}"
+                                                              DataContext="{Binding TimKiemKhachHangVM}"
+                                                              SearchBoxItemSource="{Binding DisplayItems}"
+                                                              Text="{Binding Text,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                              SearchBoxItemTemplate="{StaticResource SearchKhachHangTemplate}"
+                                                              ListBoxMaxHeight="200"
+                                                              Panel.ZIndex="1"
+                                                              SelectedValue="{Binding TenKH, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                              Margin="5 10 10 10"
+                                                              FontSize="13"
+                                                              IconSource="/Images/search_icon.png"
+                                                              IconHeight="25"
+                                                              Hint="Tìm kiếm khách hàng"/>
+                                <Button x:Name="btnThemKhachHang"
+                                        DockPanel.Dock="Bottom"
+                                        Margin="10"
+                                        Style="{StaticResource UIProjectLightIconButtonStyle}"
+                                        HorizontalAlignment="Right"
+                                        ToolTip="Thêm khách hàng mới"
+                                        Click="BtnThemKhachHang_Click"
+                                        Command="{Binding ThemKhachHangCommand}">
+                                    <materialDesign:PackIcon Kind="PersonAdd"
+                                                             Height="auto"
+                                                             Width="auto"/>
+                                </Button>
+                            </DockPanel>
+                        </materialDesign:Card>
+                        <materialDesign:Card Grid.Column="1"
+                                             Style="{StaticResource UIProjectMaterialDesignCardStyle}"
+                                             Margin="5 10 5 10"
+                                             Padding="5">
+                            <StackPanel Grid.Column="1">
+                                <Label Style="{StaticResource TitleLabelStyle}"
+                                       Content="Địa chỉ giao hàng"/>
+                                <Grid Grid.Row="1" Grid.Column="2" >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Label Grid.Row="0" Grid.Column="0"
+                                           Content="Địa chỉ"
+                                           VerticalAlignment="Top"/>
+                                    <Label Grid.Row="1" Grid.Column="0"
+                                           Content="Số điện thoại"/>
+                                    <TextBox Grid.Row="0" Grid.Column="1"
+                                             Margin="5"
+                                             Height="100"                                            
+                                             Style="{StaticResource UIProjectMultipleLineTextBoxStyle}"
+                                             Text="{Binding PhieuDichVuVM.DiaChi, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                                    <TextBox Grid.Row="1" Grid.Column="1"
+                                             Margin="5"
+                                             Style="{StaticResource UIProjectTextBoxStyle}"
+                                             Text="{Binding PhieuDichVuVM.SoDienThoai, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                                </Grid>
+                            </StackPanel>
+                        </materialDesign:Card>
+                        <materialDesign:Card Grid.Column="2"
+                                             Style="{StaticResource UIProjectMaterialDesignCardStyle}"
+                                             Margin="5 10 0 10"
+                                             Padding="5">
+                            <DockPanel>
+                                <Label DockPanel.Dock="Top"
+                                       Style="{StaticResource TitleLabelStyle}"
+                                       Content="Thành tiền"/>
+                                <Grid 
+                                      Grid.Row="1" Grid.Column="2" >
+                                    <Grid.Resources>
+                                        <Style TargetType="{x:Type Label}" x:Key="ValueLabelStyle" BasedOn="{StaticResource ValueLabelStyle}">
+                                            <Setter Property="Foreground" Value="{StaticResource PrimaryHueLightBrush}"/>
+                                            <Setter Property="FontWeight" Value="DemiBold"/>
+                                        </Style>
+                                    </Grid.Resources>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Label Grid.Row="0" Grid.Column="0"
+                                           Content="Tổng tiền"/>
+                                    <Label Grid.Row="1" Grid.Column="0"
+                                           Content="Tổng tiền trả trước"/>
+                                    <Label Grid.Row="2" Grid.Column="0"
+                                           Content="Tổng tiền còn lại"/>
+                                    <Label Grid.Row="3" Grid.Column="0"
+                                           Content="Tình trạng"/>
+                                    <Label Grid.Row="0" Grid.Column="1"
+                                           Style="{StaticResource ValueLabelStyle}"
+                                           Content="{Binding PhieuDichVuVM.PhieuDichVu.TongTien, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource moneyConverter}}"/>
+                                    <Label Grid.Row="1" Grid.Column="1"
+                                           Style="{StaticResource ValueLabelStyle}"
+                                           Content="{Binding PhieuDichVuVM.PhieuDichVu.TongTienTraTruoc, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource moneyConverter}}"/>
+                                    <Label Grid.Row="2" Grid.Column="3"
+                                           Style="{StaticResource ValueLabelStyle}"
+                                           Content="{Binding PhieuDichVuVM.PhieuDichVu.TongTienConLai, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource moneyConverter}}"/>
+                                    <Label Grid.Row="3" Grid.Column="3"
+                                           Style="{StaticResource ValueLabelStyle}"
+                                           Content="{Binding PhieuDichVuVM.PhieuDichVu.TenTinhTrang, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                </Grid>
+                            </DockPanel>
+                        </materialDesign:Card>
+                        
+                    </Grid>
+                    <materialDesign:Card Grid.Row="1" Grid.Column="0"
+                                         Style="{StaticResource UIProjectMaterialDesignCardStyle}"
+                                         Margin="0 10 0 0"
+                                         Padding="10"
+                                         Panel.ZIndex="1">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Row="0"
+                                   Style="{StaticResource TitleLabelStyle}"
+                                   HorizontalAlignment="Left"
+                                   Content="Thông tin dịch vụ"/>
+                            <customControls:SearchTextBox Grid.Row="0" Grid.Column="1"
+                                                          Panel.ZIndex="99"
+                                                          BorderThickness="1"
+                                                          BorderBrush="{StaticResource AirForceBlue}"
+                                                          Style="{StaticResource CustomSearchTextBoxStyle}"
+                                                          DataContext="{Binding TimKiemDichVuVM}"
+                                                          Text="{Binding Text,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                          SearchBoxItemTemplate="{StaticResource SearchDichVuTemplate}"
+                                                          SearchBoxItemSource="{Binding DisplayItems}"
+                                                          SelectedValue="{Binding TenLoaiDV,Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                          HorizontalAlignment="Right"
+                                                          ListBoxMaxHeight="200"
+                                                          IconHeight="20"
+                                                          Width="300"
+                                                          Hint="Tìm kiếm dịch vụ"/>
+                            <DataGrid Grid.Row="1" Grid.ColumnSpan="2"   
+                                      Panel.ZIndex="1"
+                                      Background="#f8f8f8"
+                                      BorderThickness="1"
+                                      BorderBrush="LightGray"
+                                      x:Name="ProductView"
+                                      Margin="0 10 0 0"
+                                      Height="auto"
+                                      DataContext="{Binding PhieuDichVuVM.DSChiTietDichVu, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                      ItemsSource="{Binding Items, UpdateSourceTrigger=PropertyChanged}"
+                                      dataGridAttach:DataGridSetColumnStyle.Elementstyle="{StaticResource UIProjectDataGridElementStyle}"
+                                      CanUserSortColumns="True"
+                                      CanUserAddRows="False"
+                                      CanUserResizeColumns="False"
+                                      CanUserResizeRows="False"
+                                      AutoGenerateColumns="False"
+                                      materialDesign:DataGridAssist.CellPadding="8"
+                                      materialDesign:DataGridAssist.ColumnHeaderPadding="8"
+                                      SelectionUnit="FullRow"
+                                      Grid.RowSpan="2">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Width="100"
+                                                        Binding="{Binding Model.TenLoaiDV}"
+                                                        Header="Loại DV"
+                                                        IsReadOnly="True"
+                                                        CanUserSort="False"
+                                                        HeaderStyle="{StaticResource LeftDataGridHeader}"
+                                                        CellStyle="{StaticResource LeftDataGridCell}"/>
+                                    <DataGridTextColumn Width="110"
+                                                        TextBlock.TextAlignment="Center"
+                                                        IsReadOnly="True"
+                                                        Binding="{Binding Model.DonGiaDV, Mode=OneWay, Converter={StaticResource moneyConverter}}"
+                                                        Header="Đơn giá DV"
+                                                        HeaderStyle="{StaticResource RightDataGridHeader}"
+                                                        CellStyle="{StaticResource RightDataGridCell}"/>
+                                    <DataGridTextColumn Width="110"
+                                                        TextBlock.TextAlignment="Center"
+                                                        IsReadOnly="False"
+                                                        Binding="{Binding Model.ChiPhiRieng, Mode=TwoWay, UpdateSourceTrigger=LostFocus, Converter={StaticResource moneyConverter}}"
+                                                        Header="Chi phí riêng"
+                                                        HeaderStyle="{StaticResource RightDataGridHeader}"
+                                                        CellStyle="{StaticResource RightDataGridCell}"
+                                                        EditingElementStyle="{StaticResource CustomEditingTextColumnElementStyle}"/>
+                                    <DataGridTextColumn Width="110"
+                                                        TextBlock.TextAlignment="Center"
+                                                        IsReadOnly="True"
+                                                        Binding="{Binding Model.DonGiaDuocTinh, Mode=OneWay, Converter={StaticResource moneyConverter}}"
+                                                        Header="ĐG được tính"
+                                                        HeaderStyle="{StaticResource RightDataGridHeader}"
+                                                        CellStyle="{StaticResource RightDataGridCell}"/>
+                                    <DataGridTextColumn Width="70"
+                                                        Binding="{Binding Model.SoLuong, Mode=TwoWay, UpdateSourceTrigger=LostFocus, Converter={StaticResource numberValidateConverter}}"
+                                                        CanUserSort="False"
+                                                        Header="SL"
+                                                        TextBlock.TextAlignment="Center"
+                                                        IsReadOnly="False"
+                                                        HeaderStyle="{StaticResource RightDataGridHeader}"
+                                                        CellStyle="{StaticResource RightDataGridCell}"
+                                                        EditingElementStyle="{StaticResource CustomEditingTextColumnElementStyle}"/>
+                                    <DataGridTextColumn Width="110"
+                                                        Header="Thành tiền"
+                                                        Binding="{Binding Model.ThanhTien, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource moneyConverter}}"
+                                                        HeaderStyle="{StaticResource RightDataGridHeader}"
+                                                        CellStyle="{StaticResource RightDataGridCell}"
+                                                        EditingElementStyle="{StaticResource CustomEditingTextColumnElementStyle}"
+                                                        IsReadOnly="False"/>
+                                    <DataGridTextColumn Width="110"
+                                                        Binding="{Binding Model.TraTruoc, Mode=TwoWay, UpdateSourceTrigger=LostFocus, Converter={StaticResource moneyConverter}}"
+                                                        Header="Trả trước"
+                                                        TextBlock.TextAlignment="Right"
+                                                        IsReadOnly="False"
+                                                        HeaderStyle="{StaticResource RightDataGridHeader}"
+                                                        CellStyle="{StaticResource RightDataGridCell}"
+                                                        EditingElementStyle="{StaticResource CustomEditingTextColumnElementStyle}"/>
+                                    <DataGridTextColumn Width="110"
+                                                        Binding="{Binding Model.ConLai, Mode=OneWay, Converter={StaticResource moneyConverter}}"
+                                                        Header="Còn lại"
+                                                        TextBlock.TextAlignment="Right"
+                                                        IsReadOnly="True"
+                                                        CanUserSort="False"                                           
+                                                        HeaderStyle="{StaticResource RightDataGridHeader}"
+                                                        CellStyle="{StaticResource RightDataGridCell}"
+                                                        EditingElementStyle="{StaticResource CustomEditingTextColumnElementStyle}"/>
+                                    <DataGridTextColumn Width="110"
+                                                        Binding="{Binding Model.NgayGiao, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                        Header="Ngày giao"
+                                                        TextBlock.TextAlignment="Right"
+                                                        IsReadOnly="False"
+                                                        CanUserSort="False"                                           
+                                                        HeaderStyle="{StaticResource RightDataGridHeader}"
+                                                        CellStyle="{StaticResource RightDataGridCell}"
+                                                        EditingElementStyle="{StaticResource CustomEditingTextColumnElementStyle}"/>
+                                    <DataGridTextColumn Width="110"
+                                                        Binding="{Binding Model.TenTinhTrang, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                        Header="Tình trạng"
+                                                        TextBlock.TextAlignment="Right"
+                                                        IsReadOnly="True"
+                                                        CanUserSort="False"                                           
+                                                        HeaderStyle="{StaticResource RightDataGridHeader}"
+                                                        CellStyle="{StaticResource RightDataGridCell}"/>
+                                    <DataGridTemplateColumn Width="30"
+                                                            HeaderStyle="{StaticResource CenteredDataGridHeader}"
+                                                            CellStyle="{StaticResource ButtonDataGridCellStyle}">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Style="{StaticResource UIProjectIconButtonStyle}"
+                                                        ToolTip="Xóa chi tiết dịch vụ"
+                                                        VerticalAlignment="Center"
+                                                        HorizontalAlignment="Center"
+                                                        Background="Transparent"
+                                                        Foreground="Black"
+                                                        Width="30"
+                                                        Height="30"
+                                                        Command="{Binding DataContext.RemoveItemCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}}"
+                                                        CommandParameter="{Binding DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGridRow}}}">
+                                                    <materialDesign:PackIcon Kind="RemoveCircle"
+                                                                     Height="auto"
+                                                                     Width="auto"/>
+                                                </Button>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                    </materialDesign:Card>
+                </Grid>
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <materialDesign:Card Grid.Column="1"
+                                         Style="{StaticResource UIProjectMaterialDesignCardStyle}"
+                                         Margin="10"
+                                         Padding="10">
+                        <StackPanel Orientation="Vertical">
+                            <Label Style="{StaticResource TitleLabelStyle}"
+                                    HorizontalAlignment="Left"
+                                    Content="Thông tin phiếu dịch vụ"/>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <StackPanel Grid.Row="0"
+                                            Orientation="Vertical"
+                                            Margin="0 0 0 20">
+                                    <Label 
+                                           Content="Ngày lập phiếu"/>
+                                    <DatePicker FontSize="15"
+                                                Name="LocaleDatePicker"
+                                                materialDesign:HintAssist.Hint="Locale Date"
+                                                Style="{StaticResource UIProjectDatePickerStyle}"
+                                                SelectedDate="{Binding PhieuDichVuVM.PhieuDichVu.NgayLap, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                    </DatePicker>
+                                </StackPanel>
+                                <StackPanel Grid.Row="1"
+                                            Orientation="Vertical">
+                                    <Label Content="Ghi chú"/>
+                                    <TextBox Style="{StaticResource UIProjectMultipleLineTextBoxStyle}"
+                                             Margin="0 0 0 5"
+                                             Height="200"
+                                             MaxHeight="200"
+                                             Text="{Binding PhieuDichVuVM.PhieuDichVu.GhiChu, Mode=OneWayToSource, UpdateSourceTrigger=LostFocus}"/>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                    </materialDesign:Card>
+                    <Button Grid.Row="1"
+                            x:Name="btnSubmitPhieuDichVu"
+                            Margin="10 10 10 0"
+                            Style="{StaticResource UIProjectLightShadowButtonStyle}"
+                            Command="{Binding SubmitPhieuDichVuCommand}"
+                            IsEnabled="{Binding PhieuDichVu.IsDataValid, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            Content="Tạo phiếu dịch vụ"
+                            Click="BtnSubmitPhieuDichVu_Click"/>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Border>
+</Page>

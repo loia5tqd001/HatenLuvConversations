@@ -1,0 +1,56 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:UIProject.Templates.CustomDataTemplates"
+                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+    <DataTemplate x:Key="DanhSachChiTietBanTemplate">
+        <DataGrid HorizontalAlignment="Left"
+                  Background="#f8f8f8"
+                  DataContext="{Binding Content, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ContentControl}}}"
+                  CanUserSortColumns="True"
+                  ItemsSource="{Binding Items}"
+                  CanUserAddRows="False"
+                  CanUserResizeColumns="False"
+                  CanUserResizeRows="False"
+                  AutoGenerateColumns="False"
+                  SelectionUnit="FullRow"
+                  VerticalScrollBarVisibility="Auto">
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="70"
+                                    Binding="{Binding Model.MaSP}"
+                                    CanUserSort="False"
+                                    IsReadOnly="True"
+                                    Header="Mã SP"
+                                    HeaderStyle="{StaticResource LeftDataGridHeader}"
+                                    CellStyle="{StaticResource LeftDataGridCell}"/>
+                <DataGridTextColumn Width="140"
+                                    Binding="{Binding Model.TenSP}"
+                                    Header="Tên sản phẩm"
+                                    IsReadOnly="True"
+                                    CanUserSort="False"
+                                    HeaderStyle="{StaticResource LeftDataGridHeader}"
+                                    CellStyle="{StaticResource LeftDataGridCell}"/>
+                <DataGridTextColumn Width="130"
+                                    IsReadOnly="True"
+                                    Binding="{Binding Model.DonGiaBanRa, Mode=OneWay, Converter={StaticResource moneyConverter}}"
+                                    Header="Đơn giá"
+                                    CanUserSort="False"
+                                    HeaderStyle="{StaticResource RightDataGridHeader}"
+                                    CellStyle="{StaticResource RightDataGridCell}"/>
+                <DataGridTextColumn Width="50"
+                                    Binding="{Binding Model.SoLuong}"
+                                    Header="SL"
+                                    IsReadOnly="True"
+                                    CanUserSort="False"
+                                    HeaderStyle="{StaticResource RightDataGridHeader}"
+                                    CellStyle="{StaticResource RightDataGridCell}"/>
+                <DataGridTextColumn Width="150"
+                                    IsReadOnly="True"
+                                    Binding="{Binding Model.ThanhTien, Mode=OneWay, Converter={StaticResource moneyConverter}}"
+                                    Header="Thành tiền"
+                                    CanUserSort="False"
+                                    HeaderStyle="{StaticResource RightDataGridHeader}"
+                                    CellStyle="{StaticResource RightDataGridCell}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </DataTemplate>
+</ResourceDictionary>

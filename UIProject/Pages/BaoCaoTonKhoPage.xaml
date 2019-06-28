@@ -1,0 +1,173 @@
+﻿<Page x:Class="UIProject.Pages.BaoCaoTonKhoPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:UIProject.Pages"
+      xmlns:customControls="clr-namespace:UIProject.CustomControls"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:converters="clr-namespace:UIProject.Converters"
+      mc:Ignorable="d" 
+      Title="BaoCaoTonKhoPage">
+    <Page.Resources>
+        <converters:NumberValidateConverter x:Key="numberValidateConverter"/>
+    </Page.Resources>
+    <Border Padding="10">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0"
+                   Style="{StaticResource LargeLabelStyle}"
+                   Content="Báo cáo tồn kho"/>
+            <Separator Grid.Row="1"
+                       Margin="0 10"/>
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <materialDesign:Card Grid.Column="1"
+                                     Style="{StaticResource UIProjectMaterialDesignCardStyle}"
+                                     Padding="10">
+                    <Grid>
+                        <Grid.Resources>
+                            <Style TargetType="{x:Type StackPanel}">
+                                <Setter Property="Margin" Value="5 10 30 10"/>
+                                <Setter Property="Width" Value="200"/>
+                                <Setter Property="Orientation" Value="Vertical"/>
+                            </Style>
+                            <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource MaterialDesignComboBox}">
+                                <Setter Property="Margin" Value="0"/>
+                            </Style>
+                            <Style TargetType="{x:Type Label}" BasedOn="{StaticResource MediumLabelStyle}">
+                                <Setter Property="Padding" Value="0 5"/>
+                            </Style>
+                        </Grid.Resources>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <!--<Label Grid.Row="0" Grid.Column="0"
+                                   Style="{StaticResource MediumLabelStyle}"
+                                   FontWeight="Bold"
+                                   Content="Lọc sản phẩm"/>
+                            <StackPanel Grid.Row="1" Grid.Column="0">
+                                <Label Content="Loại sản phẩm"/>
+                                <ComboBox Height="35"
+                                          FontSize="15"
+                                          DataContext="{Binding DanhSachLoaiSanPhamVM}"
+                                          ItemsSource="{Binding Collection.Items}"
+                                          SelectedItem="{Binding Collection.SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          DisplayMemberPath="Model.TenLoaiSP"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="2" Grid.Column="0">
+                                <Label Content="Nhà cung cấp"/>
+                                <customControls:SearchTextBox Style="{StaticResource UIProjectSearchTextBoxStyle}"
+                                                              DataContext="{Binding TImKiemNhaCungCapVM}"
+                                                              Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                              SearchBoxItemSource="{Binding DisplayItems}"
+                                                              SelectedValue="{Binding Model.TenNCC, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                              Height="40"
+                                                              Background="WhiteSmoke"
+                                                              FontSize="15"/>
+                            </StackPanel>-->
+                        </Grid>
+                        <Grid Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Label Grid.Row="0" Grid.Column="1"
+                                Style="{StaticResource MediumLabelStyle}"
+                               FontWeight="Bold"
+                                Content="Thời gian"/>
+
+                            <StackPanel Grid.Row="1" Grid.Column="1">
+                                <Label Content="Tháng"/>
+                                <TextBox Style="{StaticResource UIProjectTextBoxStyle}"
+                                         Text="{Binding BaoCaoTonKhoVM.Thang, Mode=TwoWay, UpdateSourceTrigger=LostFocus, Converter={StaticResource numberValidateConverter}}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="2" Grid.Column="1">
+                                <Label Content="Năm"/>
+                                <TextBox Style="{StaticResource UIProjectTextBoxStyle}"
+                                         Text="{Binding BaoCaoTonKhoVM.Nam, Mode=TwoWay, UpdateSourceTrigger=LostFocus, Converter={StaticResource numberValidateConverter}}"/>
+                            </StackPanel>
+                        </Grid>
+                        <StackPanel Grid.Column="2"
+                                    Style="{x:Null}"
+                                    Orientation="Vertical">
+                            <StackPanel.Resources>
+                                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource UIProjectLightButtonStyle}">
+                                    <Setter Property="Margin" Value="10 5"/>
+                                    <Setter Property="Width" Value="150"/>
+                                </Style>
+                            </StackPanel.Resources>
+                            <Button x:Name="btnLoadBaoCao"
+                                    Content="Tải báo cáo"
+                                    Command="{Binding LoadBaoCaoCommand}"
+                                    Click="BtnLoadBaoCao_Click"/>
+                            <Button x:Name="btnIn"
+                                    Content="In"
+                                    Command="{Binding InBaoCaoTonKhoCommand}"
+                                    Click="BtnIn_Click"/>
+                        </StackPanel>
+                    </Grid>
+                </materialDesign:Card>
+                <materialDesign:Card Grid.Column="0"
+                                     Style="{StaticResource UIProjectMaterialDesignCardStyle}"
+                                     Padding="5">
+                    <Grid>
+                        <Grid.Resources>
+                            <Style TargetType="{x:Type Label}" BasedOn="{StaticResource MediumLabelStyle}" x:Key="ValueLabelStyle">
+                                <Setter Property="Margin" Value="10"/>
+                                <Setter Property="Foreground" Value="{StaticResource PrimaryHueLightBrush}"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                                <Setter Property="HorizontalContentAlignment" Value="Right"/>
+                            </Style>
+                            <Style TargetType="{x:Type Label}" BasedOn="{StaticResource MediumLabelStyle}">
+                                <Setter Property="Margin" Value="10"/>
+                            </Style>
+                        </Grid.Resources>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Row="0" Grid.Column="0"
+                               Content="Số lượng tồn kho"/>
+                        <Label Grid.Row="1" Grid.Column="0"
+                               Content="Gía trị tồn kho"/>
+                        <Label Grid.Row="0" Grid.Column="1"
+                               Style="{StaticResource ValueLabelStyle}"
+                               Content="{Binding BaoCaoTonKhoVM.TongSoLuongTonKho, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Label Grid.Row="1" Grid.Column="1"
+                               Style="{StaticResource ValueLabelStyle}"
+                               Content="{Binding BaoCaoTonKhoVM.TongGiaTriTonKho, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource moneyConverter}}"/>
+                    </Grid>
+                </materialDesign:Card>
+            </Grid>
+
+            <materialDesign:Card Grid.Row="3"
+                                 Style="{StaticResource UIProjectMaterialDesignCardStyle}"
+                                 Margin="0 10 0 10"
+                                 ContentTemplate="{StaticResource DanhSachSanPhamBaoCaoTonKhoTemplate}"
+                                 Content="{Binding BaoCaoTonKhoVM.DanhSachSanPhamBaoCao}">
+            </materialDesign:Card>
+        </Grid>
+    </Border>
+</Page>

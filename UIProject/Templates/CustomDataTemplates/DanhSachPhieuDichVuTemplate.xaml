@@ -1,0 +1,64 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:UIProject.Templates.CustomDataTemplates"
+                    xmlns:behaviors="clr-namespace:UIProject.Behaviors">
+    <DataTemplate x:Key="DanhSachPhieuDichVuTemplate">
+        <DataGrid DataContext="{Binding Content, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                  CanUserSortColumns="True"
+                  behaviors:DataGridAttachProperties.AllowCustomSort="True"
+                  ItemsSource="{Binding DisplayItems, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                  SelectedItem="{Binding SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  CanUserAddRows="False"
+                  CanUserResizeColumns="False"
+                  CanUserResizeRows="False"
+                  AutoGenerateColumns="False"
+                  SelectionUnit="FullRow"
+                  VerticalScrollBarVisibility="Auto">
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="90"
+                                    Binding="{Binding Model.MaPhieu}"
+                                    Header="Mã phiếu"
+                                    IsReadOnly="True"
+                                    CanUserSort="True"
+                                    HeaderStyle="{StaticResource LeftDataGridHeader}"
+                                    CellStyle="{StaticResource LeftDataGridCell}"/>
+                <DataGridTextColumn Width="140"
+                                    Binding="{Binding Model.NgayLapDate}"
+                                    behaviors:DataGridAttachProperties.CustomSorter="{StaticResource dateSorter}"
+                                    Header="Ngày lập"
+                                    IsReadOnly="True"
+                                    CanUserSort="True"
+                                    HeaderStyle="{StaticResource CenteredDataGridHeader}"
+                                    CellStyle="{StaticResource CenteredDataGridCell}"/>
+                <DataGridTextColumn Width="100"
+                                    IsReadOnly="True"
+                                    Binding="{Binding Model.MaKH}"
+                                    Header="Mã KH"
+                                    CanUserSort="True"
+                                    HeaderStyle="{StaticResource LeftDataGridHeader}"
+                                    CellStyle="{StaticResource LeftDataGridCell}"/>
+                <DataGridTextColumn Width="100"
+                                    Binding="{Binding Model.TongTien, Mode=OneWay,Converter={StaticResource moneyConverter}}"
+                                    Header="Tổng tiền"
+                                    IsReadOnly="True"
+                                    CanUserSort="True"
+                                    HeaderStyle="{StaticResource RightDataGridHeader}"
+                                    CellStyle="{StaticResource RightDataGridCell}"/>
+                <DataGridTextColumn Width="100"
+                                    IsReadOnly="True"
+                                    Binding="{Binding Model.TongTienTraTruoc, Converter={StaticResource moneyConverter}}"
+                                    Header="Trả trước"
+                                    CanUserSort="True"
+                                    HeaderStyle="{StaticResource RightDataGridHeader}"
+                                    CellStyle="{StaticResource RightDataGridCell}"/>    
+                <DataGridTextColumn Width="100"
+                                    IsReadOnly="True"
+                                    Binding="{Binding Model.TenTinhTrang}"
+                                    Header="Tình trạng"
+                                    CanUserSort="True"
+                                    HeaderStyle="{StaticResource RightDataGridHeader}"
+                                    CellStyle="{StaticResource RightDataGridCell}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </DataTemplate>
+</ResourceDictionary>
